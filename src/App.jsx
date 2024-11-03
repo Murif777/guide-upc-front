@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div>
-     {/* <WelcomeMessage show={showModal} onHide={handleClose} />*/}
+      <WelcomeMessage show={showModal} onHide={handleClose} />
       <Header />
       <Container fluid>
         <Row>
