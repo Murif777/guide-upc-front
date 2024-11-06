@@ -1,43 +1,50 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import React, { useState } from 'react';
+import styles from './Login.module.css';
+import Inicio from './Inicio';
 
-function BasicExample() {
+const Login = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    setIsLoggedIn(true);
+  };
+
+  if (isLoggedIn) {
+    return <Inicio />;
+  }
+
   return (
-    <Form>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password" />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
+    <div className={styles.container}>
+      <section className={styles.section}>
+        <form onSubmit={handleLogin}>
+          <h1 className={styles.h1}>Log in - GUIDE-UPC</h1>
+          <div className={styles.inputbox}>
+            
+            <input type="email" required />
+            <label className={styles.label}>Usuario</label>
+          </div>
+          <div className={styles.inputbox}>
+            
+            <input type="password" required />
+            <label className={styles.label}>Contraseña</label>
+          </div>
+          <div className={styles.forget}>
+            <label>
+              <input type="checkbox" /> Recordar
+            </label>
+            <a href="#">Olvidé mi contraseña</a>
+          </div>
+          <button type="submit" className={styles.button}>Login</button>
+          <div className={styles.register}>
+            <p>
+              No tengo cuenta <a href="#">Registrar</a>
+            </p>
+          </div>
+        </form>
+      </section>
+    </div>
   );
-}
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
+};
 
-function FormFloatingSelectExample() {
-  return (
-    <FloatingLabel controlId="floatingSelect" label="Works with selects">
-      <Form.Select aria-label="Floating label select example">
-        <option>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </Form.Select>
-    </FloatingLabel>
-  );
-}
-export default BasicExample;
+export default Login;

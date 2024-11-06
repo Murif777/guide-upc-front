@@ -16,7 +16,7 @@ function OffcanvasExample() {
                 className="d-inline-block align-top"
               />
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}style={NavToggleStyle} />
+           {/*  <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}style={NavToggleStyle} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -34,7 +34,7 @@ function OffcanvasExample() {
                   <Nav.Link href="#action2">Ver lugares</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
-            </Navbar.Offcanvas>
+            </Navbar.Offcanvas>*/}
           </Container>
         </Navbar>
       ))}
