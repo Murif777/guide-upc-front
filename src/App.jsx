@@ -7,12 +7,14 @@ import Inicio from './components/Inicio';
 import CrearRuta from './components/CrearRuta';
 import HistorialRutas from './components/HistorialRutas';
 import VerLugares from './components/VerLugares';
+import Registrar from './components/Registrar';
 
 function App() {
   return (
     <Router>
       <Header />
       <Routes>
+        <Route path="/registrar" element={<Registrar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/inicio/*" element={<Inicio />} />
         {/* Rutas anidadas dentro de Inicio */}
@@ -20,7 +22,7 @@ function App() {
         <Route path="/inicio/historial-rutas" element={<HistorialRutas />} />
         <Route path="/inicio/ver-lugares" element={<VerLugares />} />
         {/* Ruta predeterminada */}
-        <Route path="*" element={<Navigate to="/inicio" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
       {/*<Footer />*/}
     </Router>

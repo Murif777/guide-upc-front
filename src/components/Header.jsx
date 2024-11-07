@@ -1,5 +1,6 @@
 
 import { Navbar, Nav, Container, Image, Button, Form, NavDropdown, Offcanvas } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function OffcanvasExample() {
   return (
@@ -7,15 +8,17 @@ function OffcanvasExample() {
       {[false].map((expand) => (
         <Navbar key={expand} expand={expand} style={NavBarStyle}>
           <Container fluid>
-          <Navbar.Brand href="#">
-              <Image 
-                src="https://www.unicesar.edu.co/wp-content/uploads/2024/05/LOGO-UPC-VERDE-2.png" 
-                alt="Logo" 
-                width={140}
-                height={50}
-                className="d-inline-block align-top"
-              />
-            </Navbar.Brand>
+            <LinkContainer to="/inicio">
+              <Navbar.Brand href="#inicio">
+                <Image 
+                  src="https://www.unicesar.edu.co/wp-content/uploads/2024/05/LOGO-UPC-VERDE-2.png" 
+                  alt="Logo" 
+                  width={140}
+                  height={50}
+                  className="d-inline-block align-top"
+                />
+              </Navbar.Brand>
+             </LinkContainer> 
            {/*  <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}style={NavToggleStyle} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
