@@ -13,6 +13,7 @@ function Inicio() {
         <Route path="historial-rutas" element={<HistorialRutas />} />
         <Route path="ver-lugares" element={<VerLugares />} />
       </Routes>
+
     </>
   );
 }

@@ -1,30 +1,40 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Login from './components/Login';
 import Inicio from './components/Inicio';
 import CrearRuta from './components/CrearRuta';
 import HistorialRutas from './components/HistorialRutas';
 import VerLugares from './components/VerLugares';
-import Registrar from './components/Registrar';
+import LoginForm from './components/LoginForm';
+import AuthContent from './components/AuthContent';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
+// Crear una función interna para renderizar el Header y Footer condicionalmente 
+const RenderHeaderFooter = ({ children }) => {
+    const location = useLocation(); 
+    return ( 
+    <> 
+      {location.pathname !== "/login" && <Header/>} 
+      {children} 
+      {location.pathname !== "/login" && <Footer />} 
+    </> 
+    );
+  };
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/registrar" element={<Registrar />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/inicio/*" element={<Inicio />} />
-        {/* Rutas anidadas dentro de Inicio */}
-        <Route path="/inicio/crear-ruta" element={<CrearRuta />} />
-        <Route path="/inicio/historial-rutas" element={<HistorialRutas />} />
-        <Route path="/inicio/ver-lugares" element={<VerLugares />} />
-        {/* Ruta predeterminada */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-      {/*<Footer />*/}
+      <RenderHeaderFooter>
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/inicio/*" element={<PrivateRoute element={<Inicio />} />} />
+          <Route path="/inicio/crear-ruta" element={<PrivateRoute element={<CrearRuta />} />} />
+          <Route path="/inicio/historial-rutas" element={<PrivateRoute element={<HistorialRutas />} />} />
+          <Route path="/inicio/ver-lugares" element={<PrivateRoute element={<VerLugares />} />} />
+          <Route path="/auth-content" element={<PrivateRoute element={<AuthContent />} />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </RenderHeaderFooter>
     </Router>
   );
 }
