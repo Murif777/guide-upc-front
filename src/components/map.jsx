@@ -16,7 +16,7 @@ const Mapa = () => {
     lng: -73.2617245380028
   };
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDeZYRwlUuizazIYTXuen0DfeP0cQdOZeM",
+    googleMapsApiKey: "key",
     libraries
   });
 
