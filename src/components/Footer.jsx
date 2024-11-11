@@ -1,10 +1,11 @@
-import { Github, Linkedin, Twitter } from 'lucide-react'
+import { Github, Linkedin, Twitter } from 'lucide-react';
+import './Footer.css'; // Asegúrate de importar tus estilos aquí
 
 function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark text-white py-4">
+    <footer className="footer text-white">
       <div className="container">
         <div className="row align-items-center">
           <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -24,7 +25,7 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

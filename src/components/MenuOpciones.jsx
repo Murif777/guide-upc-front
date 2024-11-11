@@ -1,37 +1,44 @@
-import React from 'react';
-import Col from 'react-bootstrap/Col';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
+
 import { LinkContainer } from 'react-router-bootstrap';
+import OpcionCard from './OpcionCard';
+import './VerLugares.css';
 
 function MenuOpciones() {
   return (
-    <Tab.Container id="list-group-tabs-example" defaultActiveKey="#crear-ruta">
-      <h5>Seleccione una opcion</h5>
-      <Row>
-        <Col sm={4}>
-          <ListGroup>
-            <LinkContainer to="/inicio/crear-ruta">
-              <ListGroup.Item action href="#crear-ruta">
-                Crear una ruta
-              </ListGroup.Item>
-            </LinkContainer>
-            <LinkContainer to="/inicio/historial-rutas">
-              <ListGroup.Item action href="#historial-rutas">
-                Ver historial de rutas
-              </ListGroup.Item>
-            </LinkContainer>
-            <LinkContainer to="/inicio/ver-lugares">
-              <ListGroup.Item action href="#ver-lugares">
-                Ver lugares
-              </ListGroup.Item>
-            </LinkContainer>
-          </ListGroup>
-        </Col>
-       
-      </Row>
-    </Tab.Container>
+    <>
+        <div className='Title'>
+          <h5>Seleccione una opción</h5>
+        </div>
+        <div className='Container'>
+              <LinkContainer to="/inicio/crear-ruta">
+                <div className='Card'>
+                  <OpcionCard
+                    imagen="https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" 
+                    titulo="Crear ruta" 
+                    descripcion="Crea una ruta seleccionando punto de partida y llegada"
+                  />
+                </div>
+              </LinkContainer>
+              <LinkContainer to="/inicio/historial-rutas">
+                <div className='Card'>
+                  <OpcionCard
+                      imagen="https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" 
+                      titulo="Ver historial de rutas" 
+                      descripcion="Consulta las rutas que has consultado anteriormente"
+                    />
+                </div>
+              </LinkContainer>
+              <LinkContainer to="/inicio/ver-lugares">
+                <div className='Card'>
+                  <OpcionCard
+                      imagen="https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" 
+                      titulo="Ver lugares" 
+                      descripcion="Busca un lugar en especifico para obtener informacion"
+                    />
+                </div>
+              </LinkContainer>
+        </div>
+    </>
   );
 }
 

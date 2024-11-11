@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -7,9 +6,7 @@ import CrearRuta from './components/CrearRuta';
 import HistorialRutas from './components/HistorialRutas';
 import VerLugares from './components/VerLugares';
 import LoginForm from './components/LoginForm';
-import AuthContent from './components/AuthContent';
 import PrivateRoute from './components/PrivateRoute';
-
 function App() {
 // Crear una función interna para renderizar el Header y Footer condicionalmente 
 const RenderHeaderFooter = ({ children }) => {
@@ -31,7 +28,6 @@ const RenderHeaderFooter = ({ children }) => {
           <Route path="/inicio/crear-ruta" element={<PrivateRoute element={<CrearRuta />} />} />
           <Route path="/inicio/historial-rutas" element={<PrivateRoute element={<HistorialRutas />} />} />
           <Route path="/inicio/ver-lugares" element={<PrivateRoute element={<VerLugares />} />} />
-          <Route path="/auth-content" element={<PrivateRoute element={<AuthContent />} />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </RenderHeaderFooter>
