@@ -1,7 +1,7 @@
-```markdown
+
 # Guide-UPC
 
-Guide-UPC es un sistema de navegación accesible desarrollado para personas con discapacidad visual en el campus de la Universidad Popular del Cesar. Este sistema permite a los usuarios moverse de forma autónoma dentro del campus, aprovechando tecnologías de asistencia como narraciones automáticas, descripciones auditivas y compatibilidad con lectores de pantalla. La aplicación frontend está construida en React con Vite y se conecta a un backend desarrollado en Spring Boot.
+Guide-UPC es un sistema de navegación accesible desarrollado para personas con discapacidad visual en el campus de la Universidad Popular del Cesar. Este sistema permite a los usuarios moverse de forma autónoma dentro del campus, aprovechando tecnologías de asistencia como narraciones automáticas, descripciones auditivas y compatibilidad con lectores de pantalla. La aplicación frontend está construida en React con Vite y se conecta a un [backend desarrollado en Spring Boot](https://github.com/Murif777/guide-upc-back).
 
 ## Índice
 - [Instalación](#instalación)
@@ -12,8 +12,8 @@ Guide-UPC es un sistema de navegación accesible desarrollado para personas con 
 - [Licencia](#licencia)
 
 ## Instalación
-
-### Frontend
+Asegúrate de tener instalada la ultima versión de Node.js (recomendada LTS) en tu sistema. Puedes descargarlo desde [la página oficial de Node.js](https://nodejs.org/).
+## Frontend
 1. Clona el repositorio del frontend:
    ```bash
    git clone https://github.com/tu_usuario/guide-upc-front.git
@@ -28,7 +28,7 @@ Guide-UPC es un sistema de navegación accesible desarrollado para personas con 
    ```
 4. Inicia el servidor de desarrollo:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ### Backend
