@@ -1,6 +1,7 @@
-import { Form, FloatingLabel, Button} from 'react-bootstrap';
-import { useState } from 'react';
+import { Form, FloatingLabel, Button } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import SistemaRutas from './SistemaRutas';
+import { getLugares } from '../../services/LugarService';
 
 function MenuRutas() {
   const [startLocation, setStartLocation] = useState("");
@@ -8,14 +9,25 @@ function MenuRutas() {
   const [submittedStart, setSubmittedStart] = useState(null);
   const [submittedEnd, setSubmittedEnd] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [lugares, setLugares] = useState([]);
+
+  useEffect(() => {
+    // Obtener los lugares desde el servicio
+    getLugares()
+      .then(data => {
+        setLugares(data);
+      })
+      .catch(error => {
+        console.error('Error al obtener los lugares:', error);
+      });
+  }, []);
 
   const handleRouteSearch = () => {
-    // Solo busca la ruta si ambas ubicaciones están seleccionadas
     if (startLocation && endLocation) {
       setLoading(true);
       setTimeout(() => {
-        setSubmittedStart(startLocation); // Guardar la ubicación de partida seleccionada
-        setSubmittedEnd(endLocation); // Guardar la ubicación de destino seleccionada
+        setSubmittedStart(startLocation);
+        setSubmittedEnd(endLocation);
         setLoading(false);
       }, 500); // Simula una solicitud de red
     }
@@ -25,10 +37,10 @@ function MenuRutas() {
     <div style={sidebarStyle}>
       <h5>Opciones de ruta</h5>
       <div className="mb-3">
-        <FormFloatingSelectExample value={startLocation} setValue={setStartLocation} />
+        <FormFloatingSelectExample value={startLocation} setValue={setStartLocation} options={lugares} />
       </div>
       <div className="mb-3">
-        <FormFloatingSelectDestination value={endLocation} setValue={setEndLocation} />
+        <FormFloatingSelectDestination value={endLocation} setValue={setEndLocation} options={lugares} />
       </div>
       <div className="mb-3">
         <Button variant="success" disabled={isLoading} onClick={!isLoading ? handleRouteSearch : null}>
@@ -39,7 +51,6 @@ function MenuRutas() {
         </Button>
       </div>
 
-      {/* Se pasa las ubicaciones seleccionadas a SistemaRutas solo después de hacer clic en "Buscar" */}
       <SistemaRutas startLocation={submittedStart} endLocation={submittedEnd} />
     </div>
   );
@@ -53,9 +64,10 @@ function FormFloatingSelect({ controlId, label, value, setValue, options }) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       >
+        <option value="">Seleccione una opción</option>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
+          <option key={option.id} value={option.nombre}>
+            {option.nombre}
           </option>
         ))}
       </Form.Select>
@@ -63,22 +75,11 @@ function FormFloatingSelect({ controlId, label, value, setValue, options }) {
   );
 }
 
-const options = [
-  { value: "", label: "Seleccione una opción" },
-  { value: "A", label: "Bloque A" },
-  { value: "B", label: "Bloque B" },
-  { value: "C", label: "Bloque C" },
-  { value: "D", label: "Bloque D" },
-  { value: "E", label: "Bloque E" },
-  { value: "F", label: "Bloque F" },
-  { value: "G", label: "Bloque G" },
-];
-
-function FormFloatingSelectExample({ value, setValue }) {
+function FormFloatingSelectExample({ value, setValue, options }) {
   return <FormFloatingSelect controlId="floatingSelect" label="Seleccione lugar de partida" value={value} setValue={setValue} options={options} />;
 }
 
-function FormFloatingSelectDestination({ value, setValue }) {
+function FormFloatingSelectDestination({ value, setValue, options }) {
   return <FormFloatingSelect controlId="floatingSelectDestination" label="Seleccione lugar de destino" value={value} setValue={setValue} options={options} />;
 }
 

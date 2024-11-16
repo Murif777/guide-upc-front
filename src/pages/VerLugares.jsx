@@ -3,7 +3,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Form, Button, Container } from 'react-bootstrap';
 import OpcionCard from '../components/common/OpcionCard';
 import '../assets/styles/VerLugares.css'; 
-import { getLugares, sendTestLugar } from '../services/LugarService';
+import { getLugares } from '../services/LugarService';
 
 export const VerLugares = () => {
   const [searchQuery, setSearchQuery] = useState('');

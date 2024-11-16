@@ -1,4 +1,4 @@
-import { request, setAuthHeader, getAuthToken } from '../helpers/axios_helper';
+import { request} from '../helpers/axios_helper';
 
   export const getLugares = async () => {
     try {

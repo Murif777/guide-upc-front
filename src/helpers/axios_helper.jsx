@@ -13,8 +13,9 @@ export const setAuthHeader = (token) => {
   }
 };
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'http://192.168.1.1:8080';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.withCredentials = true;
 
 export const request = (method, url, data) => {
   let headers = {};
@@ -39,8 +40,17 @@ export const request = (method, url, data) => {
   .catch(error => {
     console.error("Error in request:", error);
     if (error.response) {
-      console.error("Error response:", error.response);
+      console.error("Error response data:", error.response.data);
+      console.error("Error response status:", error.response.status);
+      console.error("Error response headers:", error.response.headers);
+      return Promise.reject(error.response); // Devolver detalles del error
+    } else if (error.request) {
+      console.error("No response received:", error.request);
+      return Promise.reject({ message: "No response from server", request: error.request });
+    } else {
+      console.error("Error setting up the request:", error.message);
+      return Promise.reject({ message: error.message });
     }
-    return { status: 'error' };
   });
+  
 };

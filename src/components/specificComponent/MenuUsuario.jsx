@@ -35,7 +35,7 @@ const MenuUsuario = () => {
         .then(perfil => {
           console.log("Perfil obtenido:", perfil);
           if (perfil && perfil.foto) {
-            setUserPhotoURL(`http://localhost:8080/${perfil.foto}`);
+            setUserPhotoURL(`http://192.168.1.1:8080/${perfil.foto}`);
           } else {
             const randomIndex = Math.floor(Math.random() * defaultProfilePics.length);
             setUserPhotoURL(defaultProfilePics[randomIndex]);

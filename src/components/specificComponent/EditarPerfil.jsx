@@ -22,7 +22,7 @@ export default function EditarPerfil() {
         setNombre(data.nombre);
         setApellido(data.apellido);
         setFoto(data.foto);
-        setPreviewFoto(`http://localhost:8080/${data.foto}`);
+        setPreviewFoto(`http://192.168.1.1:8080/${data.foto}`);
       })
       .catch(error => {
         console.error('Error al obtener el perfil del usuario:', error);
