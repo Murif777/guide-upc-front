@@ -15,7 +15,6 @@ const RenderHeaderFooter = ({ children }) => {
     <> 
       {location.pathname !== "/login" && <Header/>} 
       {children} 
-      {location.pathname !== "/login" && <Footer />} 
     </> 
     );
   };

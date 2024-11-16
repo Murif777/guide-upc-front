@@ -22,8 +22,9 @@ export const SubmitLogin = async (login, contraseña, navigate) => {
   );
 };
 
-export const SubmitRegister = async (nombre, apellido, login, contraseña, navigate) => {
+export const SubmitRegister = async (id,nombre, apellido, login, contraseña, navigate) => {
   const formData = {
+    id,
     nombre,
     apellido,
     login,
@@ -72,32 +73,39 @@ export const getProfile = async () => {
 };
 
 // Método para actualizar el perfil del usuario por login
-export const updateUserProfile = async (login, nombre, apellido, contraseña, foto) => {
+export const updateUserProfile = async (login, id, nombre, apellido,foto) => {
+  if (!id||id === 'undefined') {
+    throw new Error('ID de usuario no válido');
+  }
   const formData = new FormData();
+  formData.append('id', id);
   formData.append('nombre', nombre);
   formData.append('apellido', apellido);
-  formData.append('contraseña', contraseña);
-  if (foto) {
+  if (foto && foto instanceof File) {
     formData.append('foto', foto);
   }
 
   try {
-    const response = await request('PUT', `/update/${login}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const response = await request(
+      'PUT',
+      `/update/${encodeURIComponent(login)}`,
+      formData,
+      {
+        headers: {
+          // No establecemos Content-Type aquí - axios lo establecerá automáticamente con el boundary para FormData
+          'Accept': 'application/json'
+        }
       }
-    });
-    console.log('Perfil actualizado:', response.data);
-    return response.data; // Devuelve los datos actualizados del perfil
+    );
+    
+    if (response && response.data) {
+      console.log('Perfil actualizado:', response.data);
+      return response.data;
+    } else {
+      throw new Error('No se recibieron datos en la respuesta');
+    }
   } catch (error) {
     console.error('Error al actualizar el perfil:', error);
-    if (error.response && error.response.status === 400) {
-      console.error('Solicitud incorrecta.');
-    } else if (error.response && error.response.status === 401) {
-      console.error('No autorizado. Redirigiendo al login...');
-    } else {
-      console.error('Error desconocido al actualizar el perfil del usuario');
-    }
-    return null; // Devuelve null si hubo un error
+    throw error; // Re-lanzamos el error para que sea manejado por el componente que llama
   }
 };

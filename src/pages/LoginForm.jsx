@@ -6,6 +6,7 @@ import '../assets/styles/LoginForm.css';
 
 export default function LoginForm() {
     const [active, setActive] = useState("login");
+    const [id, setId] = useState("");
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [login, setLogin] = useState("");
@@ -13,6 +14,7 @@ export default function LoginForm() {
     const navigate = useNavigate();
     const onChangeHandler = (event) => {
         const { name, value } = event.target;
+        if (name === 'id') setId(value);
         if (name === 'nombre') setNombre(value);
         if (name === 'apellido') setApellido(value);
         if (name === 'login') setLogin(value);
@@ -25,7 +27,7 @@ export default function LoginForm() {
     };
     const onSubmitRegister = (e) => {
         e.preventDefault();
-        SubmitRegister(nombre,apellido,login,contraseña,navigate);
+        SubmitRegister(id,nombre,apellido,login,contraseña,navigate);
     };
 
     return (
@@ -48,7 +50,7 @@ export default function LoginForm() {
                             <form onSubmit={onSubmitLogin}>
                                 <div className="form-outline mb-4">
                                     <input type="text" id="loginName" name="login" className="form-control" onChange={onChangeHandler} />
-                                    <label className="form-label" htmlFor="loginName">Usuario/Correo electrónico</label>
+                                    <label className="form-label" htmlFor="loginName">Correo electrónico</label>
                                 </div>
                                 <div className="form-outline mb-4">
                                     <input type="password" id="loginPassword" name="contraseña" className="form-control" onChange={onChangeHandler} />
@@ -59,19 +61,23 @@ export default function LoginForm() {
                         </div>
                         <div className={classNames("tab-pane", "fade", active === "register" ? "show active" : "")} id="pills-register">
                             <form onSubmit={onSubmitRegister}>
-                                <div className="form-outline mb-4">
+                                <div className="form-outline mb-2">
+                                    <input type="text" id="id" name="id" className="form-control" onChange={onChangeHandler} />
+                                    <label className="form-label" htmlFor="id">N.Identificacion</label>
+                                </div>
+                                <div className="form-outline mb-2">
                                     <input type="text" id="nombre" name="nombre" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="nombre">Nombre</label>
                                 </div>
-                                <div className="form-outline mb-4">
+                                <div className="form-outline mb-2">
                                     <input type="text" id="apellido" name="apellido" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="apellido">Apellido</label>
                                 </div>
-                                <div className="form-outline mb-4">
+                                <div className="form-outline mb-2">
                                     <input type="text" id="login" name="login" className="form-control" onChange={onChangeHandler} />
-                                    <label className="form-label" htmlFor="login">Usuario/Correo electrónico</label>
+                                    <label className="form-label" htmlFor="login">Correo electrónico</label>
                                 </div>
-                                <div className="form-outline mb-4">
+                                <div className="form-outline mb-2">
                                     <input type="password" id="registerPassword" name="contraseña" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="registerPassword">Contraseña</label>
                                 </div>
