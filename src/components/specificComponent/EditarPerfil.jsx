@@ -54,7 +54,9 @@ export default function EditarPerfil() {
         console.error('Error al actualizar el perfil:', error);
       });
   };
-
+  const handleEdit = () => {
+    navigate("/inicio/cambiar-contra");
+  };
   return (
     <>
       <h2>Editar Perfil</h2>
@@ -114,6 +116,7 @@ export default function EditarPerfil() {
         </div>
         <button type="submit" className="btn btn-primary btn-block mb-3">Guardar Cambios</button>
       </form>
+      <button type="submit" className="btn btn-primary btn-block mb-3"onClick={handleEdit}>Cambiar contraseña</button>
     </>
   );
 }

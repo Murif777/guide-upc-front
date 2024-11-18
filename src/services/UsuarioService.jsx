@@ -109,3 +109,25 @@ export const updateUserProfile = async (login, id, nombre, apellido,foto) => {
     throw error; // Re-lanzamos el error para que sea manejado por el componente que llama
   }
 };
+
+export const updatePassword = async (login, oldPassword, newPassword, navigate) => { 
+  const formData = { 
+    login, 
+    oldPassword, 
+    newPassword 
+  }; 
+  try { 
+    const response = await request( 
+      'PUT', 
+      '/update-password', 
+      formData 
+    ); 
+
+    console.log('Contraseña actualizada:', response.data); 
+    navigate('/inicio');
+    return response.data; 
+  } catch (error) { 
+    console.error('Error al actualizar la contraseña:', error); 
+    throw error; // Re-lanzamos el error para que sea manejado por el componente que llama 
+  } 
+};

@@ -1,15 +1,20 @@
 import { Form, FloatingLabel, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SistemaRutas from './SistemaRutas';
 import { getLugares } from '../../services/LugarService';
+import { sendRuta } from '../../services/RutaService'; // Importa el servicio 
+import { getProfile} from '../../services/UsuarioService';
 
 function MenuRutas() {
+  const navigate = useNavigate();
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [submittedStart, setSubmittedStart] = useState(null);
   const [submittedEnd, setSubmittedEnd] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [lugares, setLugares] = useState([]);
+  const [id, setId] = useState("");
 
   useEffect(() => {
     // Obtener los lugares desde el servicio
@@ -19,6 +24,14 @@ function MenuRutas() {
       })
       .catch(error => {
         console.error('Error al obtener los lugares:', error);
+      });
+      getProfile()
+      .then(perfil => {
+        console.log("Perfil obtenido:", perfil);
+        setId(perfil.id);
+      })
+      .catch(error => {
+        console.error('Error al obtener el perfil', error);
       });
   }, []);
 
@@ -30,7 +43,21 @@ function MenuRutas() {
         setSubmittedEnd(endLocation);
         setLoading(false);
       }, 500); // Simula una solicitud de red
+      saveRoute(startLocation, endLocation, id);
     }
+  };
+
+  const handleCam = () => {
+    navigate("/inicio/cam-guide");
+  };
+
+  const saveRoute = async (start, end, userId) => { 
+    try { 
+      await sendRuta(userId, start, end); 
+      console.log('Ruta guardada exitosamente '+userId+startLocation+endLocation); 
+    } catch (error) { 
+      console.error('Error al guardar la ruta:', error); 
+    } 
   };
 
   return (
@@ -46,7 +73,7 @@ function MenuRutas() {
         <Button variant="success" disabled={isLoading} onClick={!isLoading ? handleRouteSearch : null}>
           {isLoading ? 'Cargando...' : 'Buscar'}
         </Button>
-        <Button variant="success">
+        <Button variant="success" onClick={handleCam}>
           Usar camara
         </Button>
       </div>

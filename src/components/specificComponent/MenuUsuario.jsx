@@ -49,7 +49,7 @@ const MenuUsuario = () => {
     }
   }, []);
 
-  const handleLogout = () => {
+   const handleLogout = () => {
     setAuthHeader(null);
     setIsAuthenticated(false);
     navigate("/login");

@@ -1,13 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button} from 'react-bootstrap';
-const graph = {
-  A: { B: { distance: 10, instructions: "Camina 10 metros hacia el norte" }, C: { distance: 15, instructions: "Camina 15 metros hacia el este" } },
-  B: { A: { distance: 10, instructions: "Camina 10 metros hacia el sur" }, D: { distance: 12, instructions: "Camina 12 metros hacia el oeste" } },
-  C: { A: { distance: 15, instructions: "Camina 15 metros hacia el oeste" }, D: { distance: 10, instructions: "Camina 10 metros hacia el norte" } },
-  D: { B: { distance: 12, instructions: "Camina 12 metros hacia el este" }, C: { distance: 10, instructions: "Camina 10 metros hacia el sur" }, E: { distance: 5, instructions: "Camina 5 metros hacia el norte" } },
-  E: { D: { distance: 5, instructions: "Camina 5 metros hacia el sur" }, F: { distance: 8, instructions: "Camina 8 metros hacia el este" } },
-  F: { E: { distance: 8, instructions: "Camina 8 metros hacia el oeste" }, G: { distance: 7, instructions: "Camina 7 metros hacia el norte" } },
-  G: { F: { distance: 7, instructions: "Camina 7 metros hacia el sur" } }
+import { getSegmentos } from '../../services/SegmentosRutaService'; // Importa el servicio 
+import Compass from './Compass';
+const buildGraphFromSegments = (segments) => { 
+  const graph = {}; 
+    segments.forEach(segment => { 
+      if (!graph[segment.lugarInicio]) { 
+        graph[segment.lugarInicio] = {}; 
+      } graph[segment.lugarInicio][segment.lugarFin] = { 
+        distance: segment.distancia, 
+        instructions: `Camina ${segment.distancia} metros hacia el ${segment.direccion}` 
+      }; 
+    }
+  ); return graph; 
+  
 };
 
 // Implementación de la cola de prioridad
@@ -41,6 +47,13 @@ class PriorityQueue {
 }
 
 const dijkstra = (graph, start, end) => {
+  if (!graph || Object.keys(graph).length === 0) {
+    console.error("El grafo está vacío o no está definido");
+    return { path: [], instructions: [] };
+  }
+
+  //console.log("Ejecutando Dijkstra en el grafo:", JSON.stringify(graph, null, 2)); // Mostrar el grafo en la consola
+
   const distances = {};
   const prev = {};
   const pq = new PriorityQueue();
@@ -60,7 +73,16 @@ const dijkstra = (graph, start, end) => {
 
     if (current === end) break;
 
+    if (!graph[current]) {
+      console.error("No se encontró el nodo en el grafo:", current);
+      continue;
+    }
+
     Object.keys(graph[current]).forEach(neighbor => {
+      if (!graph[current][neighbor]) {
+        console.error("No se encontró el vecino en el grafo:", neighbor, "para el nodo:", current);
+        return;
+      }
       const alt = distances[current] + graph[current][neighbor].distance;
       if (alt < distances[neighbor]) {
         distances[neighbor] = alt;
@@ -81,28 +103,80 @@ const dijkstra = (graph, start, end) => {
   return { path, instructions: instructions[end] };
 };
 
+
 const SistemaRutas = ({ startLocation, endLocation }) => {
+  const [segments, setSegments] = useState([]);
+  const [graph, setGraph] = useState({});
   const [route, setRoute] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [reading, setReading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const speechSynthesisRef = useRef(window.speechSynthesis);
 
   useEffect(() => {
-    if (startLocation && endLocation) {
+    setIsLoading(true);
+    getSegmentos()
+      .then(data => {
+        if (data && data.length > 0) {
+          setSegments(data);
+          const graphData = buildGraphFromSegments(data);
+          setGraph(graphData);
+          setError(null);
+        } else {
+          setError("No se obtuvieron segmentos del backend");
+        }
+      })
+      .catch(error => {
+        console.error('Error al obtener segmentos:', error);
+        setError("Error al cargar los datos de rutas");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+  
+
+  // Efecto para calcular la ruta cuando cambian las ubicaciones o el grafo está listo
+  useEffect(() => {
+    if (graph && startLocation && endLocation && !isLoading) {
       handleRouteRequest(startLocation, endLocation);
     }
-  }, [startLocation, endLocation]);
+  }, [graph, startLocation, endLocation, isLoading]);
 
   const handleRouteRequest = (start, end) => {
-    const { path, instructions } = dijkstra(graph, start, end);
-    setRoute(path);
-    setInstructions(instructions);
-    setCurrentStep(0);
-    setIsPaused(true);
-    setReading(false);
+    if (!graph || Object.keys(graph).length === 0) {
+      setError("El grafo no está listo para calcular rutas");
+      return;
+    }
+
+    try {
+      const { path, instructions } = dijkstra(graph, start, end);
+      if (path.length > 0) {
+        setRoute(path);
+        setInstructions(instructions);
+        setCurrentStep(0);
+        setIsPaused(true);
+        setReading(false);
+        setError(null);
+      } else {
+        setError("No se encontró una ruta entre los puntos seleccionados");
+      }
+    } catch (error) {
+      console.error("Error al calcular la ruta:", error);
+      setError("Error al calcular la ruta");
+    }
   };
+  if (isLoading) {
+    return <div>Cargando datos de rutas...</div>;
+  }
+
+  if (error) {
+    return <div className="text-danger">{error}</div>;
+  }
+  
 
   const speak = (text, nextStep) => {
     const isLastInstruction = currentStep === instructions.length - 1;
@@ -154,6 +228,10 @@ const SistemaRutas = ({ startLocation, endLocation }) => {
     <div>
       {route.length > 0 && (
         <>
+          <div className="mb-4">
+            <h5>Orientación actual:</h5>
+            <Compass />
+          </div>
           <h5>Ruta seleccionada:</h5>
           {!reading && <Button onClick={handleStartReading} variant="success" >
                 Leer en voz alta

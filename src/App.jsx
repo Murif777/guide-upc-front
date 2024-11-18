@@ -8,6 +8,9 @@ import VerLugares from './pages/VerLugares';
 import LoginForm from './pages/LoginForm';
 import PrivateRoute from './components/specificComponent/PrivateRoute';
 import EditarPerfil from './components/specificComponent/EditarPerfil';
+import RecuperarContra from './components/specificComponent/RecuperarContraForm';
+import WebcamCapture from './components/specificComponent/WebcamCapture';
+
 function App() {
 const RenderHeaderFooter = ({ children }) => {
     const location = useLocation(); 
@@ -25,6 +28,8 @@ const RenderHeaderFooter = ({ children }) => {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/inicio/*" element={<PrivateRoute element={<Inicio />} />} />
           <Route path="/inicio/editar-perfil" element={<PrivateRoute element={<EditarPerfil />} />} />
+          <Route path="/inicio/cambiar-contra" element={<PrivateRoute element={<RecuperarContra />} />} />
+          <Route path="/inicio/cam-guide" element={<PrivateRoute element={<WebcamCapture />} />} />
           <Route path="/inicio/crear-ruta" element={<PrivateRoute element={<CrearRuta />} />} />
           <Route path="/inicio/historial-rutas" element={<PrivateRoute element={<HistorialRutas />} />} />
           <Route path="/inicio/ver-lugares" element={<PrivateRoute element={<VerLugares />} />} />
