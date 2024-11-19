@@ -45,13 +45,15 @@ export const HistorialRutas = () => {
   };
   return (
     <>
-      <LinkContainer to="/inicio">
-        <Button variant="success">Volver a opciones</Button>
+      <LinkContainer to="/inicio" className='Volver'>
+        <Button className="btn-primary">Volver a opciones</Button>
       </LinkContainer>
-      <div className="fullscreen">
-          <div className="centered-container">
+      <div>
+          <div className="Title">
             <h5>Seleccione una ruta del historial</h5>
-            <Accordion activeKey={activeKey} onSelect={handleSelect} flush>
+          </div>
+          <div className='Container'>
+          <Accordion activeKey={activeKey} onSelect={handleSelect} flush>
                     {rutas.length > 0 ? (
                     rutas.map((ruta, index) => (
                       <Accordion.Item eventKey={index.toString()} key={index}> 

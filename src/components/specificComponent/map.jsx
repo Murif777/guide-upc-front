@@ -6,6 +6,7 @@ const libraries = ["marker"];
 
 const Mapa = () => {
   const [lugares, setLugares] = useState([]);
+  const [Foto, setFoto] = useState("");
 
   const mapStyles = {
     height: "100%",
@@ -16,7 +17,7 @@ const Mapa = () => {
     lng: -73.2617245380028
   };
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "key",
+    googleMapsApiKey: "AIzaSyDeZYRwlUuizazIYTXuen0DfeP0cQdOZeM",
     libraries
   });
 
@@ -37,39 +38,41 @@ const Mapa = () => {
   const onLoad = (map) => {
     if (google && google.maps && google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
       lugares.forEach(lugar => {
-
-        const content = document.createElement('div');
-        content.style.width = '40px';
-        content.style.height = '40px';
-        const img = document.createElement('img');
-        img.src = lugar.icono || "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg";
-        img.style.width = '100%';
-        img.style.height = '100%';
-        content.appendChild(img);
-
-        const marker = new google.maps.marker.AdvancedMarkerElement({
-          position: { lat: lugar.latitud, lng: lugar.longitud },
-          map: map,
-          title: lugar.nombre,
-          content: content
-        });
-        const infoWindowContent = ` 
-        <div> 
-          <img src="${lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" : lugar.foto}" alt="${lugar.nombre}" style="width: 100%; height: 100%; max-width: 350px;max-height: 200px;" /> 
-          <h3>${lugar.nombre}</h3> 
-          <p>${lugar.descripcion}</p> 
-        </div> `;
-        const infoWindow = new google.maps.InfoWindow({
-          content: infoWindowContent
-        });
-
-        marker.addListener("click", () => {
-          if (activeInfoWindow) {
-            activeInfoWindow.close();
-          }
-          infoWindow.open(map, marker);
-          activeInfoWindow = infoWindow;
-        });
+        if (lugar.latitud!=0||lugar.longitud!=0) {
+          const content = document.createElement('div');
+          content.style.width = '40px';
+          content.style.height = '40px';
+          const img = document.createElement('img');
+          img.src = lugar.icono || "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg";
+          img.style.width = '100%';
+          img.style.height = '100%';
+          content.appendChild(img);
+  
+          const marker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: lugar.latitud, lng: lugar.longitud },
+            map: map,
+            title: lugar.nombre,
+            content: content
+          });
+          console.log(`${lugar.foto}`)
+          const infoWindowContent = ` 
+          <div> 
+            <img src="${lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" : `http://localhost:8080/${lugar.foto}`}" alt="${lugar.nombre}" style="width: 100%; height: 100%; max-width: 350px;max-height: 200px;" /> 
+            <h3>${lugar.nombre}</h3> 
+            <p>${lugar.descripcion}</p> 
+          </div> `;
+          const infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+          });
+  
+          marker.addListener("click", () => {
+            if (activeInfoWindow) {
+              activeInfoWindow.close();
+            }
+            infoWindow.open(map, marker);
+            activeInfoWindow = infoWindow;
+          });
+        }
       });
     } else {
       console.error("google.maps.marker.AdvancedMarkerElement no está definido");

@@ -14,8 +14,8 @@ function Header() {
               <Image 
                 src={logotipo}
                 alt="Logo" 
-                width={110}
-                height={50}
+                width={125}
+                height={60}
                 className="d-inline-block align-top"
               />
             </Navbar.Brand>
@@ -35,7 +35,7 @@ function Header() {
 };  
 
 const NavBarStyle = {
-  backgroundColor: '#33b72b',
+  backgroundColor: '#435a6d',
   padding: 0,
   position: 'relative',
 };

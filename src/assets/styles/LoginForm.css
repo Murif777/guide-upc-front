@@ -20,6 +20,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  margin-top: 90px;
 }
 
 .login-page .nav-pills .nav-link.active {
@@ -32,7 +33,18 @@
   color: #33b72b; /* Color verde para el texto cuando no está activo */
 }
 
-.login-page .btn-primary {
+ .btn-primary, .btn-primary.nav-link.active {
   background-color: #33b72b; /* Color verde */
   border-color: #33b72b; /* Color verde */
+}
+.btn-primary:hover {
+  background-color: #1a7b15; /* Color verde */
+  border-color: #0c4b09; /* Color verde */
+}
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:active:focus {
+  background-color: #1a7b15 !important; /* Color verde más oscuro para click */
+  border-color: #0c4b09 !important;
+  box-shadow: 0 0 0 0.25rem rgba(51, 183, 43, 0.25) !important; /* Sombra verde al focus */
 }

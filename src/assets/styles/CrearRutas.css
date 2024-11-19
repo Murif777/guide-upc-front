@@ -4,9 +4,3 @@
     height: 75vh;
   }
   
-  @media (max-width: 768px) {
-    .map-container {
-      height: 300px;
-    }
-  }
-  

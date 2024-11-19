@@ -233,29 +233,31 @@ const SistemaRutas = ({ startLocation, endLocation }) => {
             <Compass />
           </div>
           <h5>Ruta seleccionada:</h5>
-          {!reading && <Button onClick={handleStartReading} variant="success" >
+          {!reading && <Button onClick={handleStartReading} className="btn-primary">
                 Leer en voz alta
-                </Button>}
+          </Button>}
           <p>{route.join(' -> ')}</p>
           <ul>
             {instructions.map((step, index) => (
               <li key={index}>{step}</li>
             ))}
           </ul>
-          <div>
-          <Button onClick={handlePrevious} disabled={currentStep === 0} variant="success" className="me-1">
-                Repetir
-            </Button>
-            <Button onClick={handlePrevious} disabled={currentStep === 0} variant="success" className="me-1">
-                Anterior
-            </Button>
-            <Button onClick={isPaused ? handleResume : handlePause} variant="success" className="me-1">
-              {isPaused ? "Reanudar" : "Pausar"}
-            </Button>
-            <Button onClick={handleNext} disabled={currentStep === instructions.length - 1 && !isPaused} variant="success">
-                Siguiente
-            </Button>
-          </div>
+          {reading && ( // Solo muestra los botones si reading es true
+            <div className='Buttons-Controllers'>
+              <Button onClick={handlePrevious} variant='success' className="me-1">
+                    Repetir
+              </Button>
+              <Button onClick={handlePrevious}  variant='success' className="me-1">
+                    Anterior
+              </Button>
+              <Button onClick={isPaused ? handleResume : handlePause} variant='success' className="me-1">
+                {isPaused ? "Reanudar" : "Pausar"}
+              </Button>
+              <Button onClick={handleNext} disabled={currentStep === instructions.length - 1 && !isPaused} variant='success' className="me-1">
+                    Siguiente
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>

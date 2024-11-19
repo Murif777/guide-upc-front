@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getAuthToken, setAuthHeader } from '../../helpers/axios_helper';
 import { getProfile} from '../../services/UsuarioService';
+import '../../assets/styles/MenuUsuario.css';
+
 const defaultProfilePics = [
   "https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/66b3e5d0c2ab246786ca1d5e_86.png",
   "https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/671ff8b58b0b4715228b0c1f_99.png",
@@ -35,7 +37,7 @@ const MenuUsuario = () => {
         .then(perfil => {
           console.log("Perfil obtenido:", perfil);
           if (perfil && perfil.foto) {
-            setUserPhotoURL(`http://192.168.1.1:8080/${perfil.foto}`);
+            setUserPhotoURL(`http://localhost:8080/${perfil.foto}`);
           } else {
             const randomIndex = Math.floor(Math.random() * defaultProfilePics.length);
             setUserPhotoURL(defaultProfilePics[randomIndex]);

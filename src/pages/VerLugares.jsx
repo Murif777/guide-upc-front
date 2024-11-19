@@ -4,6 +4,7 @@ import { Form, Button, Container } from 'react-bootstrap';
 import OpcionCard from '../components/common/OpcionCard';
 import '../assets/styles/VerLugares.css'; 
 import { getLugares } from '../services/LugarService';
+//import EditarLugarPic from '../components/specificComponent/ActualizarLugar';
 
 export const VerLugares = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,7 +17,7 @@ export const VerLugares = () => {
       const lugaresEncontrados = lugares.filter(lugar =>
         lugar.nombre.toLowerCase().includes(searchQuery.toLowerCase())
       ).map(lugar => {
-        lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" : lugar.foto;
+        lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" :`http://localhost:8080/${lugar.foto}`;
         return lugar;
       });
       setSearchedLugares(lugaresEncontrados);
@@ -28,10 +29,10 @@ export const VerLugares = () => {
 
   return (
     <>
-      <LinkContainer to="/inicio">
-        <Button variant="success">Volver a opciones</Button>
+      <LinkContainer to="/inicio" className='Volver'>
+        <Button >Volver a opciones</Button>
       </LinkContainer>
-      <Form onSubmit={handleSearch}>
+      <Form onSubmit={handleSearch}className='Search'>
         <Form.Group controlId="searchBar" className="d-flex">
           <Form.Control
             type="text"
@@ -40,7 +41,7 @@ export const VerLugares = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <Button variant="success" type="submit">Buscar</Button>
+          <Button type="submit">Buscar</Button>
         </Form.Group>
       </Form>
       <div className='Container'>

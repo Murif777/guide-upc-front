@@ -8,12 +8,12 @@ import '../assets/styles/CrearRutas.css';
 function CrearRutas() {
   return (
     <>
-      <LinkContainer to="/inicio">
-        <Button variant="success">Volver a opciones</Button>
+      <LinkContainer to="/inicio" className='Volver'>
+        <Button>Volver a opciones</Button>
       </LinkContainer>
       <Container fluid>
         <Row>
-          <Col xs={12} md={4} className="p-3">
+          <Col xs={20} md={4} className="p-3">
             <MenuRutas />
           </Col>
           <Col xs={12} md={8} className="p-3">
