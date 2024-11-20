@@ -40,9 +40,10 @@ const Mapa = () => {
       lugares.forEach(lugar => {
         if (lugar.latitud!=0||lugar.longitud!=0) {
           const content = document.createElement('div');
-          content.style.width = '40px';
+          content.style.width = '30px';
           content.style.height = '40px';
           const img = document.createElement('img');
+
           img.src = lugar.icono || "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg";
           img.style.width = '100%';
           img.style.height = '100%';
@@ -54,7 +55,6 @@ const Mapa = () => {
             title: lugar.nombre,
             content: content
           });
-          console.log(`${lugar.foto}`)
           const infoWindowContent = ` 
           <div> 
             <img src="${lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" : `http://localhost:8080/${lugar.foto}`}" alt="${lugar.nombre}" style="width: 100%; height: 100%; max-width: 350px;max-height: 200px;" /> 

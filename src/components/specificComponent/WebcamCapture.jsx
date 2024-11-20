@@ -7,39 +7,58 @@ const WebcamCapture = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const [detectionResults, setDetectionResults] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
-
+  
+  const CAPTURE_INTERVAL = 1000;
+  
   useEffect(() => {
-    let stopStream = null;
+    let intervalId = null;
 
-    const startDetection = async () => {
-      if (isStreaming) {
+    const processFrame = async () => {
+      if (webcamRef.current && isStreaming) {
         try {
-          stopStream = await CamService.startStream((results) => {
-            setDetectionResults(results);
-            setErrorMessage('');
-          });
+          const imageSrc = webcamRef.current.getScreenshot();
+          if (!imageSrc) return;
+
+          // Convertir base64 a blob
+          const base64Data = imageSrc.split(',')[1];
+          const byteCharacters = atob(base64Data);
+          const byteArrays = [];
+
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteArrays.push(byteCharacters.charCodeAt(i));
+          }
+
+          const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/png' });
+          console.log('Sending blob:', blob); // Para debugging
+
+          const results = await CamService.sendCam(blob);
+          setDetectionResults(results);
+          setErrorMessage('');
         } catch (error) {
-          setErrorMessage('Error al iniciar la detección: ' + error.message);
-          setIsStreaming(false);
+          console.error('Error processing frame:', error);
+          setErrorMessage('Error al procesar el frame: ' + error.message);
         }
       }
     };
 
-    startDetection();
+    if (isStreaming) {
+      intervalId = setInterval(processFrame, CAPTURE_INTERVAL);
+    }
 
-    // Cleanup
     return () => {
-      if (stopStream) {
-        stopStream();
+      if (intervalId) {
+        clearInterval(intervalId);
       }
     };
   }, [isStreaming]);
 
   const toggleStreaming = () => {
     setIsStreaming(!isStreaming);
+    if (!isStreaming) {
+      setErrorMessage('');
+    }
   };
 
-  // Función para renderizar los resultados de detección
   const renderDetectionResults = () => {
     if (!detectionResults) return null;
 
@@ -53,6 +72,9 @@ const WebcamCapture = () => {
               {data.detected ? (
                 <>
                   {data.count} {data.count === 1 ? 'forma detectada' : 'formas detectadas'}
+                  <span className="text-sm text-gray-600 ml-2">
+                    {data.positions && `(Posiciones: ${JSON.stringify(data.positions)})`}
+                  </span>
                 </>
               ) : (
                 'No detectado'
@@ -71,17 +93,26 @@ const WebcamCapture = () => {
           ref={webcamRef}
           screenshotFormat="image/png"
           className="w-full rounded-lg shadow-lg"
+          mirrored={true}
+          videoConstraints={{
+            width: 640,
+            height: 480,
+            facingMode: "user"
+          }}
         />
         {isStreaming && (
-          <div className="absolute top-2 right-2">
+          <div className="absolute top-2 right-2 flex items-center gap-2">
             <div className="animate-pulse w-3 h-3 bg-red-500 rounded-full" />
+            <span className="text-sm text-white bg-black bg-opacity-50 px-2 py-1 rounded">
+              Detectando...
+            </span>
           </div>
         )}
       </div>
 
       <div className="flex gap-4">
         <button
-          onClick={toggleStreaming}
+          onClick={() => setIsStreaming(!isStreaming)}
           className={`px-4 py-2 rounded font-medium transition-colors ${
             isStreaming
               ? 'bg-red-500 hover:bg-red-600 text-white'

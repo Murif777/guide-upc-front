@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getNavigator } from '../services/navigationService';
 
 export const getAuthToken = () => {
   const token = window.localStorage.getItem('auth_token');
@@ -18,10 +19,33 @@ axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 
+// Agregar interceptor de respuesta para manejar errores de autenticación
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      // Si el token expiró (401) o no está autorizado (403)
+      if (error.response.status === 401 || error.response.status === 403) {
+        // Limpiar el token
+        setAuthHeader(null);
+        
+        // Obtener el navigate y redirigir
+        const navigate = getNavigator();
+        if (navigate) {
+          navigate('/login');
+        }
+        
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const request = (method, url, data) => {
   let headers = {};
   const authToken = getAuthToken();
-  console.log("Auth token:", authToken); // Log the token
+  console.log("Auth token:", authToken);
 
   if (authToken !== null && authToken !== "null" && url !== '/register' && url !== '/login') {
     headers = { 'Authorization': `Bearer ${authToken}` };
@@ -44,7 +68,7 @@ export const request = (method, url, data) => {
       console.error("Error response data:", error.response.data);
       console.error("Error response status:", error.response.status);
       console.error("Error response headers:", error.response.headers);
-      return Promise.reject(error.response); // Devolver detalles del error
+      return Promise.reject(error.response);
     } else if (error.request) {
       console.error("No response received:", error.request);
       return Promise.reject({ message: "No response from server", request: error.request });
@@ -53,5 +77,4 @@ export const request = (method, url, data) => {
       return Promise.reject({ message: error.message });
     }
   });
-  
 };

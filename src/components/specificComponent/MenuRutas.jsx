@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SistemaRutas from './SistemaRutas';
 import { sendRuta } from '../../services/RutaService';
 import { getProfile } from '../../services/UsuarioService';
-
+import '../../assets/styles/MenuRutas.css'
 
 
 function MenuRutas() {
@@ -76,6 +76,12 @@ function MenuRutas() {
 }
 
 function FormFloatingSelect({ controlId, label, value, setValue, options }) {
+  const formatDisplayName = (name) => {
+    return name
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
   return (
     <FloatingLabel controlId={controlId} label={label}>
       <Form.Select
@@ -86,7 +92,7 @@ function FormFloatingSelect({ controlId, label, value, setValue, options }) {
         <option value="">Seleccione una opción</option>
         {options.map((option) => (
           <option key={option.id} value={option.nombre}>
-            {option.nombre}
+            {formatDisplayName(option.nombre)}
           </option>
         ))}
       </Form.Select>
@@ -179,9 +185,9 @@ const LUGARES = [
   { id: 75, nombre: "decanatura_de_derecho_y_ciencias_politicas" }
 ];
 const sidebarStyle = {
-  height: "40vh",
+  height: "75vh",
   width: "100%",
-  padding: '20px',
+  padding: '10px',
   overflowY: 'auto',
   boxShadow: '-2px 0 5px rgba(0,0,0,0.1)',
 };

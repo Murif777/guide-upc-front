@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { SubmitLogin, SubmitRegister } from '../services/UsuarioService';
 import classNames from 'classnames';
 import '../assets/styles/LoginForm.css'; 
+import logo from '../assets/images/logotipo.png'
 
 export default function LoginForm() {
     const [active, setActive] = useState("login");
@@ -34,6 +35,14 @@ export default function LoginForm() {
         <div className="login-page">
             <div className="fullscreen">
                 <div className="login-container">
+                <img
+                    src={logo}
+                    alt="guide-upc logo"
+                    style={{ 
+                    height:'100%',
+                    width:'100%'
+                    }}
+                />
                     <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                         <li className="nav-item" role="presentation">
                             <button className={classNames("nav-link", active === "login" ? "active" : "")} id="tab-login"
@@ -49,12 +58,12 @@ export default function LoginForm() {
                         <div className={classNames("tab-pane", "fade", active === "login" ? "show active" : "")} id="pills-login">
                             <form onSubmit={onSubmitLogin}>
                                 <div className="form-outline mb-4">
-                                    <input type="text" id="loginName" name="login" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="loginName">Correo electrónico</label>
+                                    <input type="text" id="loginName" name="login" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <div className="form-outline mb-4">
-                                    <input type="password" id="loginPassword" name="contraseña" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="loginPassword">Contraseña</label>
+                                    <input type="password" id="loginPassword" name="contraseña" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <button type="submit" className="btn btn-primary btn-block mb-4">Iniciar sesión</button>
                             </form>
@@ -62,24 +71,24 @@ export default function LoginForm() {
                         <div className={classNames("tab-pane", "fade", active === "register" ? "show active" : "")} id="pills-register">
                             <form onSubmit={onSubmitRegister}>
                                 <div className="form-outline mb-2">
-                                    <input type="text" id="id" name="id" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="id">N.Identificacion</label>
+                                    <input type="text" id="id" name="id" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <div className="form-outline mb-2">
-                                    <input type="text" id="nombre" name="nombre" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="nombre">Nombre</label>
+                                    <input type="text" id="nombre" name="nombre" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <div className="form-outline mb-2">
-                                    <input type="text" id="apellido" name="apellido" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="apellido">Apellido</label>
+                                    <input type="text" id="apellido" name="apellido" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <div className="form-outline mb-2">
-                                    <input type="text" id="login" name="login" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="login">Correo electrónico</label>
+                                    <input type="text" id="login" name="login" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <div className="form-outline mb-2">
-                                    <input type="password" id="registerPassword" name="contraseña" className="form-control" onChange={onChangeHandler} />
                                     <label className="form-label" htmlFor="registerPassword">Contraseña</label>
+                                    <input type="password" id="registerPassword" name="contraseña" className="form-control" onChange={onChangeHandler} />
                                 </div>
                                 <button type="submit" className="btn btn-primary btn-block mb-3">Registrarse</button>
                             </form>
