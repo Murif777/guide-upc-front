@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Image } from 'react-bootstrap';
 import { getProfile, updateUserProfile } from '../../services/UsuarioService';
 import '../../assets/styles/LoginForm.css';
-
+import { getServer } from '../../helpers/axios_helper';
 export default function EditarPerfil() {
   const navigate = useNavigate();
   const [id, setId] = useState("");
@@ -21,7 +21,7 @@ export default function EditarPerfil() {
         setNombre(data.nombre);
         setApellido(data.apellido);
         setFoto(data.foto);
-        setPreviewFoto(`http://localhost:8080/${data.foto}`);
+        setPreviewFoto(`http://${getServer()}:8080/${data.foto}`);
       })
       .catch(error => {
         console.error('Error al obtener el perfil del usuario:', error);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-router-bootstrap';
+import { getServer } from '../../helpers/axios_helper';
 
 const VerTutorialBtn = ({ setShowTutorial, tutorialKey }) => {
   const handleShowTutorial = () => {
@@ -10,7 +11,7 @@ const VerTutorialBtn = ({ setShowTutorial, tutorialKey }) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center',}}>
       <img
-        src="http://localhost:8080/uploads/1732070979978-536405f4-fc40-4792-9ad1-52861903ad42.png"
+        src= {`http://${getServer()}:8080/uploads/1732070979978-536405f4-fc40-4792-9ad1-52861903ad42.png `}
         alt="Mostrar Tutorial"
         onClick={handleShowTutorial}
         style={{ 

@@ -7,6 +7,7 @@ import '../assets/styles/HistorialRutas.css';
 import SistemaRutas from '../components/specificComponent/SistemaRutas';
 import VentanaEmergente from '../components/common/VentanaEmergente';
 import VerTutorialBtn from '../components/common/VerTutorialBtn';
+import { getServer } from '../helpers/axios_helper';
 
 export const HistorialRutas = () => {
   const [rutas, setRutas] = useState([]);
@@ -122,7 +123,7 @@ export const HistorialRutas = () => {
                           paddingRight:'10px'
                         }}>
                           <Image 
-                            src={"http://localhost:8080/uploads/1732052594067-111e7904-aae6-4a6d-af9b-79799b48fc32.png"}
+                            src={`http://${getServer()}:8080/uploads/1732052594067-111e7904-aae6-4a6d-af9b-79799b48fc32.png`}
                             style={{ width: '100%', height: '100%'}} 
                             alt="Icono"
                           />

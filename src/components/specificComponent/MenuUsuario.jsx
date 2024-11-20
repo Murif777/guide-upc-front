@@ -1,7 +1,7 @@
 import { Nav, Image, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getAuthToken, setAuthHeader } from '../../helpers/axios_helper';
+import { getAuthToken, setAuthHeader,getServer } from '../../helpers/axios_helper';
 import { getProfile} from '../../services/UsuarioService';
 import '../../assets/styles/MenuUsuario.css';
 
@@ -37,7 +37,7 @@ const MenuUsuario = () => {
         .then(perfil => {
           console.log("Perfil obtenido:", perfil);
           if (perfil && perfil.foto) {
-            setUserPhotoURL(`http://localhost:8080/${perfil.foto}`);
+            setUserPhotoURL(`http://${getServer()}:8080/${perfil.foto}`);
           } else {
             const randomIndex = Math.floor(Math.random() * defaultProfilePics.length);
             setUserPhotoURL(defaultProfilePics[randomIndex]);

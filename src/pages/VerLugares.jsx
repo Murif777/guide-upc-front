@@ -6,6 +6,7 @@ import VentanaEmergente from '../components/common/VentanaEmergente';
 import '../assets/styles/VerLugares.css'; 
 import { getLugares } from '../services/LugarService';
 import VerTutorialBtn from '../components/common/VerTutorialBtn';
+import { getServer } from '../helpers/axios_helper';
 
 export const VerLugares = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,7 +27,7 @@ export const VerLugares = () => {
       const lugaresEncontrados = lugares.filter(lugar =>
         lugar.nombre.toLowerCase().includes(searchQuery.toLowerCase())
       ).map(lugar => {
-        lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" :`http://localhost:8080/${lugar.foto}`;
+        lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" :`http://${getServer()}:8080/${lugar.foto}`;
         return lugar;
       });
       setSearchedLugares(lugaresEncontrados);

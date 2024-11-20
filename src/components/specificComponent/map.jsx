@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { getLugares } from '../../services/LugarService';
-
+import { getServer } from '../../helpers/axios_helper';
 const libraries = ["marker"];
 
 const Mapa = () => {
@@ -57,7 +57,7 @@ const Mapa = () => {
           });
           const infoWindowContent = ` 
           <div> 
-            <img src="${lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" : `http://localhost:8080/${lugar.foto}`}" alt="${lugar.nombre}" style="width: 100%; height: 100%; max-width: 350px;max-height: 200px;" /> 
+            <img src="${lugar.foto = lugar.foto == null ? "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg" : `http://${getServer()}:8080/${lugar.foto}`}" alt="${lugar.nombre}" style="width: 100%; height: 100%; max-width: 350px;max-height: 200px;" /> 
             <h3>${lugar.nombre}</h3> 
             <p>${lugar.descripcion}</p> 
           </div> `;

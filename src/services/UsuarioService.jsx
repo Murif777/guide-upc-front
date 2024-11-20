@@ -1,28 +1,47 @@
 import { request, setAuthHeader } from '../helpers/axios_helper';
 
-export const SubmitLogin = async (login, contraseña, navigate) => {
-  request(
-    "POST",
-    "/login",
-    { login, contraseña }
-  ).then(
-    (response) => {
-      console.log(response.data);
-      if (response.data && response.data.token) {
-        setAuthHeader(response.data.token); // Almacenar el token en el almacenamiento local
-        navigate('/inicio');
-      } else {
-        console.error("Token no presente en la respuesta");
-      }
-    }).catch(
-    (error) => {
-      setAuthHeader(null);
-      console.error(error);
+  export const SubmitLogin = async (login, contraseña, navigate, onError) => {
+  try {
+    const response = await request(
+      "POST",
+      "/login",
+      { login, contraseña }
+    );
+
+    if (response.data && response.data.token) {
+      setAuthHeader(response.data.token);
+      navigate('/inicio');
+    } else {
+      // Fallback error handling if no token is present
+      onError("Error al iniciar sesión");
     }
-  );
+  } catch (error) {
+    setAuthHeader(null);
+    
+    // Check for specific error responses from the backend
+    if (error.response) {
+      // Backend returned an error response
+      if (error.response.status === 401) {
+        // Unauthorized - typically means invalid credentials
+        onError("Correo electrónico o contraseña inválidos");
+      } else if (error.response.status === 404) {
+        onError("Usuario no encontrado");
+      } else {
+        // Generic server error
+        onError("Error al conectar con el servidor");
+      }
+    } else if (error.request) {
+      // Request was made but no response received
+      onError("error del servidor"+error.Error);
+    } else {
+      // Something happened in setting up the request
+      onError("Error inesperado al iniciar sesión");
+    }
+  }
 };
 
-export const SubmitRegister = async (id,nombre, apellido, login, contraseña, navigate) => {
+// Rest of the code remains the same
+export const SubmitRegister = async (id, nombre, apellido, login, contraseña, navigate) => {
   const formData = {
     id,
     nombre,

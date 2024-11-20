@@ -5,6 +5,7 @@ import '../assets/styles/MenuOpciones.css';
 import VentanaEmergente from '../components/common/VentanaEmergente';
 import { useState } from 'react';
 import VerTutorialBtn from '../components/common/VerTutorialBtn';
+import { getServer } from '../helpers/axios_helper';
 
 function MenuOpciones() {
   const [showTutorial, setShowTutorial] = useState(() => { 
@@ -88,7 +89,7 @@ function MenuOpciones() {
               <LinkContainer to="/inicio/crear-ruta">
                 <div className='Card'>
                   <OpcionCard
-                    imagen="http://localhost:8080/uploads\1732002694310-5c20a92c-8c01-4082-8bef-f16dea5a6717.png" 
+                    imagen={`http://${getServer()}:8080/uploads/1732002694310-5c20a92c-8c01-4082-8bef-f16dea5a6717.png`}
                     titulo="Crear ruta" 
                     descripcion="Crea una ruta seleccionando punto de partida y llegada"
                   />
@@ -97,7 +98,7 @@ function MenuOpciones() {
               <LinkContainer to="/inicio/historial-rutas">
                 <div className='Card'>
                   <OpcionCard
-                      imagen="http://localhost:8080/uploads\1732005863894-3023aa70-a92c-4924-8d0d-5f673b926163.png" 
+                      imagen={`http://${getServer()}:8080/uploads/1732005863894-3023aa70-a92c-4924-8d0d-5f673b926163.png`}
                       titulo="Ver historial de rutas" 
                       descripcion="Consulta las rutas que has consultado anteriormente"
                     />
@@ -106,7 +107,7 @@ function MenuOpciones() {
               <LinkContainer to="/inicio/ver-lugares">
                 <div className='Card'>
                   <OpcionCard
-                      imagen="http://localhost:8080/uploads\1732003938466-beb1da93-8806-45d4-be83-138cb979b54b.png" 
+                      imagen={`http://${getServer()}:8080/uploads/1732003938466-beb1da93-8806-45d4-be83-138cb979b54b.png`}
                       titulo="Ver lugares" 
                       descripcion="Busca un lugar en especifico para obtener informacion"
                     />

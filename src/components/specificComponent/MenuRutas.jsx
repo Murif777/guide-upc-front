@@ -1,20 +1,19 @@
-import { Form, FloatingLabel, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Form, FloatingLabel, Button, Modal } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import SistemaRutas from './SistemaRutas';
 import { sendRuta } from '../../services/RutaService';
 import { getProfile } from '../../services/UsuarioService';
 import '../../assets/styles/MenuRutas.css'
 
-
 function MenuRutas() {
-  const navigate = useNavigate();
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [submittedStart, setSubmittedStart] = useState(null);
   const [submittedEnd, setSubmittedEnd] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [id, setId] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getProfile()
@@ -34,13 +33,15 @@ function MenuRutas() {
         setSubmittedStart(startLocation);
         setSubmittedEnd(endLocation);
         setLoading(false);
-      }, 500); // Simula una solicitud de red
+      }, 500);
       saveRoute(startLocation, endLocation, id);
     }
   };
 
-  const handleCam = () => {
-    navigate("/inicio/cam-guide");
+  const handleUseCam = () => {
+    if (!startLocation || !endLocation) {
+      setShowModal(true);
+    }
   };
 
   const saveRoute = async (start, end, userId) => { 
@@ -62,18 +63,51 @@ function MenuRutas() {
         <FormFloatingSelectDestination value={endLocation} setValue={setEndLocation} options={LUGARES} />
       </div>
       <div className="mb-3">
-        <Button className="btn-primary me-3" disabled={isLoading} onClick={!isLoading ? handleRouteSearch : null}>
+        <Button 
+          className="btn-primary me-3" 
+          disabled={isLoading} 
+          onClick={!isLoading ? handleRouteSearch : null}
+        >
           {isLoading ? 'Cargando...' : 'Buscar'}
         </Button>
-        <Button className="btn-primary me-3" onClick={handleCam}>
-          Usar camara
-        </Button>
+        {startLocation && endLocation ? (
+            <LinkContainer 
+              to={{
+                pathname: "/inicio/cam-guide",
+                search: `?start=${startLocation}&end=${endLocation}`
+              }}
+            >
+              <Button className="btn-primary me-3"> Usar camara</Button>
+          </LinkContainer>
+        ) : (
+          <Button 
+            className="btn-primary me-3" 
+            onClick={handleUseCam}
+          >
+            Usar camara
+          </Button>
+        )}
       </div>
 
       <SistemaRutas startLocation={submittedStart} endLocation={submittedEnd} />
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Seleccione Lugares</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Por favor, seleccione un lugar de partida y un lugar de destino antes de usar la cámara.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
+
 
 function FormFloatingSelect({ controlId, label, value, setValue, options }) {
   const formatDisplayName = (name) => {

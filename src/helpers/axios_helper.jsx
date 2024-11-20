@@ -14,8 +14,13 @@ export const setAuthHeader = (token) => {
   }
 };
 
-//axios.defaults.baseURL = 'http://192.168.1.1:8080';
-axios.defaults.baseURL = 'http://localhost:8080';
+export const getServer = () => {
+  return '192.168.1.1';
+};
+
+axios.defaults.baseURL = `http://${getServer()}:8080/`;
+
+//axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 

@@ -7,7 +7,7 @@ export const CamService = {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/process-image', 
+        'http://192.168.183.203:5173/api/process-image', 
         formData,
         {
           headers: {
