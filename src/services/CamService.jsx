@@ -1,5 +1,5 @@
 import axios from 'axios';  // Cambiamos a usar axios directamente para mejor control
-
+import { getServer } from '../helpers/axios_helper';
 export const CamService = {
   sendCam: async (imageBlob) => {
     const formData = new FormData();
@@ -7,13 +7,13 @@ export const CamService = {
 
     try {
       const response = await axios.post(
-        'http://192.168.183.203:5173/api/process-image', 
+        `http://${getServer()}:8080/api/process-image`, 
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          timeout: 10000,
+          timeout: 1000,
         }
       );
       

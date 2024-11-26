@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { Button} from 'react-bootstrap';
-import { getSegmentos } from '../../services/SegmentosRutaService'; // Importa el servicio 
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import { Button } from 'react-bootstrap';
+import { getSegmentos } from '../../services/SegmentosRutaService';
 import Compass from './Compass';
+
 const buildGraphFromSegments = (segments) => { 
   const graph = {}; 
     segments.forEach(segment => { 
@@ -104,7 +105,7 @@ const dijkstra = (graph, start, end) => {
 };
 
 
-const SistemaRutas = ({ startLocation, endLocation }) => {
+const SistemaRutas = forwardRef(({ startLocation, endLocation }, ref) => {
   const [segments, setSegments] = useState([]);
   const [graph, setGraph] = useState({});
   const [route, setRoute] = useState([]);
@@ -115,6 +116,40 @@ const SistemaRutas = ({ startLocation, endLocation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const speechSynthesisRef = useRef(window.speechSynthesis);
+
+  useImperativeHandle(ref, () => {
+    const methods = {
+      route,
+      ...(ref ? {
+        handleRouteQRVerification: (qrData) => {
+          // Si es la primera instrucción y aún no se ha iniciado la lectura
+          if (!reading && currentStep === 0 && route[currentStep].toLowerCase() === qrData.toLowerCase()) {
+            handleStartReading();
+            return true;
+          }
+          
+          // Verificación para los pasos subsiguientes
+          if (currentStep < route.length && 
+              route[currentStep].toLowerCase() === qrData.toLowerCase()) {
+            
+            // Reproduce la siguiente instrucción
+            if (currentStep < instructions.length - 1) {
+              const nextStep = currentStep + 1;
+              setCurrentStep(nextStep);
+              speak(instructions[nextStep], nextStep + 1 < instructions.length ? nextStep + 1 : null);
+            } else {
+              speak("Llegó a su destino.", null);
+            }
+            
+            return true;
+          }
+          return false;
+        }
+      } : {})
+    };
+  
+    return methods;   
+  }, [route, currentStep, reading, instructions]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -180,7 +215,7 @@ const SistemaRutas = ({ startLocation, endLocation }) => {
 
   const speak = (text, nextStep) => {
     const isLastInstruction = currentStep === instructions.length - 1;
-    const instructionText = isLastInstruction ? text : text + ". Presione siguiente para continuar.";
+    const instructionText = isLastInstruction ? text : text + ". Presione siguiente o dirijase al siguiente checkpoint para continuar.";
     const utterance = new SpeechSynthesisUtterance(instructionText);
     utterance.onend = () => {
       if (!isPaused && nextStep !== null) {
@@ -194,6 +229,7 @@ const SistemaRutas = ({ startLocation, endLocation }) => {
     setReading(true);
     setIsPaused(false);
     speak(instructions[0], 1);
+    console.log(route);
   };
 
   const handlePause = () => {
@@ -262,5 +298,7 @@ const SistemaRutas = ({ startLocation, endLocation }) => {
       )}
     </div>
   );
-};
+});
+
+SistemaRutas.displayName = 'SistemaRutas';
 export default SistemaRutas;

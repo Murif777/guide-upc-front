@@ -6,6 +6,7 @@ import VentanaEmergente from '../components/common/VentanaEmergente';
 import { useState } from 'react';
 import VerTutorialBtn from '../components/common/VerTutorialBtn';
 import { getServer } from '../helpers/axios_helper';
+import HelpButton from '../components/common/HelpButton';
 
 function MenuOpciones() {
   const [showTutorial, setShowTutorial] = useState(() => { 
@@ -79,8 +80,9 @@ function MenuOpciones() {
       >
         <TutorialContent />
       </VentanaEmergente> 
-      <div className='p-2 pb-0 '>
-      <VerTutorialBtn setShowTutorial={setShowTutorial} tutorialKey="menuPrincipalTutorialVisto" />
+      <div className='p-4 pb-0 ' style={{display:'flex'}}>
+        <VerTutorialBtn setShowTutorial={setShowTutorial} tutorialKey="menuPrincipalTutorialVisto" />
+        <HelpButton/>
       </div>
         <div className='Title'>
           <h5>Seleccione una opción</h5>

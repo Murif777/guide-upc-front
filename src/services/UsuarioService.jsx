@@ -12,35 +12,27 @@ import { request, setAuthHeader } from '../helpers/axios_helper';
       setAuthHeader(response.data.token);
       navigate('/inicio');
     } else {
-      // Fallback error handling if no token is present
       onError("Error al iniciar sesión");
     }
   } catch (error) {
     setAuthHeader(null);
     
-    // Check for specific error responses from the backend
     if (error.response) {
-      // Backend returned an error response
       if (error.response.status === 401) {
-        // Unauthorized - typically means invalid credentials
         onError("Correo electrónico o contraseña inválidos");
       } else if (error.response.status === 404) {
         onError("Usuario no encontrado");
       } else {
-        // Generic server error
         onError("Error al conectar con el servidor");
       }
     } else if (error.request) {
-      // Request was made but no response received
-      onError("error del servidor"+error.Error);
+      onError("error del servidor "+error.Error);
     } else {
-      // Something happened in setting up the request
       onError("Error inesperado al iniciar sesión");
     }
   }
 };
 
-// Rest of the code remains the same
 export const SubmitRegister = async (id, nombre, apellido, login, contraseña, navigate) => {
   const formData = {
     id,
@@ -48,7 +40,7 @@ export const SubmitRegister = async (id, nombre, apellido, login, contraseña, n
     apellido,
     login,
     contraseña,
-    foto: null // Pasar null por defecto para la foto
+    foto: null 
   };
   request(
     "POST",
@@ -75,23 +67,21 @@ export const getProfile = async () => {
   try {
     const response = await request('GET', '/profile');
     console.log('Profile response:', response.data);
-    return response.data; // Devuelve los datos del perfil
+    return response.data; 
   } catch (error) {
     console.error('Error fetching profile:', error);
     if (error.response && error.response.status === 404) {
       console.error('Perfil no encontrado.');
     } else if (error.response && error.response.status === 401) {
       console.error('No autorizado. Redirigiendo al login...');
-      // Redirigir al usuario a la página de login
       return null;
     } else {
       console.error('Error desconocido al obtener el perfil del usuario');
     }
-    return null; // Devuelve null si hubo un error
+    return null;
   }
 };
 
-// Método para actualizar el perfil del usuario por login
 export const updateUserProfile = async (login, id, nombre, apellido,foto) => {
   if (!id||id === 'undefined') {
     throw new Error('ID de usuario no válido');
@@ -149,4 +139,8 @@ export const updatePassword = async (login, oldPassword, newPassword, navigate) 
     console.error('Error al actualizar la contraseña:', error); 
     throw error; // Re-lanzamos el error para que sea manejado por el componente que llama 
   } 
+};
+
+export const sendTelegramNotification = (location) => {
+  return request('POST', '/api/telegram/send', { location });
 };

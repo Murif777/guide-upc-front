@@ -6,7 +6,11 @@
     background-color: transparent !important;
   }
   
-
+  .floating-select:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
 
   .form-select:focus {
     border: none !important;

@@ -7,6 +7,7 @@ import '../assets/styles/VerLugares.css';
 import { getLugares } from '../services/LugarService';
 import VerTutorialBtn from '../components/common/VerTutorialBtn';
 import { getServer } from '../helpers/axios_helper';
+//import EditarLugarPic from '../components/specificComponent/ActualizarLugar';
 
 export const VerLugares = () => {
   const [searchQuery, setSearchQuery] = useState('');

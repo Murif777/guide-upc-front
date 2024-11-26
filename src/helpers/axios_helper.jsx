@@ -15,12 +15,11 @@ export const setAuthHeader = (token) => {
 };
 
 export const getServer = () => {
-  return '192.168.1.1';
+  return 'localhost';
 };
 
 axios.defaults.baseURL = `http://${getServer()}:8080/`;
 
-//axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 
@@ -54,7 +53,7 @@ export const request = (method, url, data) => {
 
   if (authToken !== null && authToken !== "null" && url !== '/register' && url !== '/login') {
     headers = { 'Authorization': `Bearer ${authToken}` };
-    console.log("Setting Authorization header:", headers.Authorization);
+    console.log(" header:", headers.Authorization);
   }
 
   return axios({
