@@ -1,18 +1,16 @@
 
-import { LinkContainer, Button } from 'react-router-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import OpcionCard from '../components/common/OpcionCard';
 import '../assets/styles/MenuOpciones.css'; 
 import VentanaEmergente from '../components/common/VentanaEmergente';
 import { useState } from 'react';
-import VerTutorialBtn from '../components/common/VerTutorialBtn';
 import { getServer } from '../helpers/axios_helper';
-import HelpButton from '../components/common/HelpButton';
-
+import NavigationControls from '../components/common/NavigationControls';
 function MenuOpciones() {
   const [showTutorial, setShowTutorial] = useState(() => { 
     return localStorage.getItem('menuPrincipalTutorialVisto') !== 'true'; 
-  }
-); 
+    }
+  ); 
 
   const handleCloseTutorial = () => { 
     setShowTutorial(false); 
@@ -80,10 +78,11 @@ function MenuOpciones() {
       >
         <TutorialContent />
       </VentanaEmergente> 
-      <div className='p-4 pb-0 ' style={{display:'flex'}}>
-        <VerTutorialBtn setShowTutorial={setShowTutorial} tutorialKey="menuPrincipalTutorialVisto" />
-        <HelpButton/>
-      </div>
+      <NavigationControls 
+        setShowTutorial={setShowTutorial} 
+        tutorialKey="menuPrincipalTutorialVisto" 
+        hidenItem= {true}
+      />
         <div className='Title'>
           <h5>Seleccione una opción</h5>
         </div>

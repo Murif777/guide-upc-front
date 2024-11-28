@@ -1,12 +1,10 @@
 import {useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 import MenuRutas from '../components/specificComponent/MenuRutas';
 import Mapa from '../components/specificComponent/map';
 import '../assets/styles/CrearRutas.css'; 
 import VentanaEmergente from '../components/common/VentanaEmergente';
-import VerTutorialBtn from '../components/common/VerTutorialBtn';
-
+import NavigationControls from '../components/common/NavigationControls';
 function CrearRutas() {
   const [showTutorial, setShowTutorial] = useState(() => { 
     return localStorage.getItem('CrearRutaTutorialVisto') !== 'true'; 
@@ -89,12 +87,10 @@ function CrearRutas() {
       >
         <TutorialContent />
       </VentanaEmergente>
-      <div className='p-2 pb-0 ' style={{display:'flex'}}>
-        <LinkContainer to="/inicio" className='Volver'>
-          <Button>Volver a opciones</Button>
-        </LinkContainer>
-        <VerTutorialBtn setShowTutorial={setShowTutorial} tutorialKey="CrearRutaTutorialVisto" />
-      </div>
+      <NavigationControls 
+        setShowTutorial={setShowTutorial} 
+        tutorialKey="CrearRutaTutorialVisto" 
+      />
       <Container fluid>
         <Row>
           <Col xs={20} md={4} className="p-3">

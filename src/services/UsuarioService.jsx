@@ -26,7 +26,7 @@ import { request, setAuthHeader } from '../helpers/axios_helper';
         onError("Error al conectar con el servidor");
       }
     } else if (error.request) {
-      onError("error del servidor "+error.Error);
+      onError("Correo electrónico o contraseña inválidos");
     } else {
       onError("Error inesperado al iniciar sesión");
     }

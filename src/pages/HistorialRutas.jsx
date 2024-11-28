@@ -1,13 +1,13 @@
-import { LinkContainer } from 'react-router-bootstrap';
-import { Button, Accordion, Image } from 'react-bootstrap';
-import { useState, useEffect, useRef } from 'react';
+
+import { Accordion, Image } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import { getRutasByUsuario } from '../services/RutaService';
 import { getProfile } from '../services/UsuarioService'; // Asegúrate de importar el servicio del perfil del usuario
 import '../assets/styles/HistorialRutas.css';
 import SistemaRutas from '../components/specificComponent/SistemaRutas';
 import VentanaEmergente from '../components/common/VentanaEmergente';
-import VerTutorialBtn from '../components/common/VerTutorialBtn';
 import { getServer } from '../helpers/axios_helper';
+import NavigationControls from '../components/common/NavigationControls';
 
 export const HistorialRutas = () => {
   const [rutas, setRutas] = useState([]);
@@ -101,12 +101,10 @@ export const HistorialRutas = () => {
       >
         <TutorialContent />
       </VentanaEmergente>
-      <div className='p-4 pb-0 ' style={{display:'flex'}}>
-        <LinkContainer to="/inicio" className='Volver'>
-          <Button>Volver a opciones</Button>
-        </LinkContainer>
-        <VerTutorialBtn setShowTutorial={setShowTutorial} tutorialKey="HistorialTutorialVisto" />
-      </div>
+      <NavigationControls 
+        setShowTutorial={setShowTutorial} 
+        tutorialKey="HistorialTutorialVisto" 
+      />
       <div>
           <div className="Title">
             <h5>Seleccione una ruta del historial</h5>

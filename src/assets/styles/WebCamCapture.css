@@ -38,3 +38,8 @@
     align-items: center;
     gap: 8px;
   }
+  .VolverBtn{
+    max-width: 200px;
+    margin: 10px;
+    margin-bottom: 0px;
+  }

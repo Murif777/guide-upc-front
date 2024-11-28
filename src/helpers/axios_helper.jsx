@@ -15,7 +15,7 @@ export const setAuthHeader = (token) => {
 };
 
 export const getServer = () => {
-  return 'localhost';
+  return '192.168.1.2';
 };
 
 axios.defaults.baseURL = `http://${getServer()}:8080/`;

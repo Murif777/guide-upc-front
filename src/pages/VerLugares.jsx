@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
 import { Form, Button, Container } from 'react-bootstrap';
 import OpcionCard from '../components/common/OpcionCard';
 import VentanaEmergente from '../components/common/VentanaEmergente';
 import '../assets/styles/VerLugares.css'; 
 import { getLugares } from '../services/LugarService';
-import VerTutorialBtn from '../components/common/VerTutorialBtn';
 import { getServer } from '../helpers/axios_helper';
+import NavigationControls from '../components/common/NavigationControls';
 //import EditarLugarPic from '../components/specificComponent/ActualizarLugar';
 
 export const VerLugares = () => {
@@ -88,12 +87,10 @@ export const VerLugares = () => {
       >
         <TutorialContent />
       </VentanaEmergente>
-      <div className='p-2 pb-0 ' style={{display:'flex'}}>
-        <LinkContainer to="/inicio" className='Volver'>
-          <Button>Volver a opciones</Button>
-        </LinkContainer>
-        <VerTutorialBtn setShowTutorial={setShowTutorial} tutorialKey="LugaresTutorialVisto" />
-      </div>
+      <NavigationControls 
+        setShowTutorial={setShowTutorial} 
+        tutorialKey="LugaresTutorialVisto" 
+      />
       <Form onSubmit={handleSearch} className='Search'>
         <Form.Group controlId="searchBar" className="d-flex">
           <Form.Control
